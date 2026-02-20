@@ -495,46 +495,94 @@
 <script>
 const questions = [
   {
+    category: "Preventive Care",
+    text: "When was your last annual physical exam?",
+    options: ["Within the past year", "1–2 years ago", "More than 2 years ago / can't recall"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Preventive Care",
+    text: "How often do you schedule health screenings recommended for your age?",
+    options: ["I stay up to date", "I do them occasionally", "I haven't started yet"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Family History",
+    text: "Do you know your family's major health history?",
+    options: ["Yes, and I share it with my doctor", "I know some details", "Not really"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Work-Life Balance",
+    text: "How would you describe your typical work-life balance?",
+    options: ["I actively protect time for rest and recovery", "It fluctuates depending on workload", "Work often overrides rest"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Physical Activity",
+    text: "How often do you engage in physical activity?",
+    options: ["3–5 times per week", "1–2 times per week", "Rarely"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Sleep Quality",
+    text: "How would you describe your sleep quality?",
+    options: ["Restful and consistent", "Sometimes interrupted", "Frequently insufficient"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Stress Management",
+    text: "How often do you experience prolonged stress?",
+    options: ["I manage stress effectively", "Occasionally overwhelmed", "Frequently stressed"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Healthcare Habits",
+    text: "Do you consult a doctor when you notice unusual or persistent symptoms?",
+    options: ["Promptly", "I monitor first", "I tend to delay"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Awareness",
+    text: "How familiar are you with cancer screening guidelines for your age group?",
+    options: ["Very familiar", "Somewhat aware", "Not familiar"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Preventive Care",
+    text: "How often do you prioritize preventive health discussions with your doctor?",
+    options: ["At every visit", "Occasionally", "Rarely"],
+    scores: [3, 2, 1]
+  },
+  {
+    category: "Diet",
+    text: "How would you describe your diet?",
+    options: ["Mostly balanced and intentional", "Mixed, depending on schedule", "Often convenience-based"],
+    scores: [3, 2, 1]
+  },
+  {
     category: "Lifestyle",
-    text: "How would you describe your smoking history?",
-    options: ["Never smoked", "Quit more than 5 years ago", "Quit within the last 5 years", "Currently smoke"],
-    scores: [0, 1, 2, 3]
+    text: "Do you smoke or have a history of smoking?",
+    options: ["Never", "Former smoker", "Current smoker"],
+    scores: [3, 2, 1]
   },
   {
     category: "Lifestyle",
     text: "How often do you consume alcohol?",
-    options: ["Never or rarely", "Socially (a few times a month)", "Weekly", "Daily or almost daily"],
-    scores: [0, 1, 2, 3]
+    options: ["Occasionally / socially", "Regularly in moderation", "Frequently"],
+    scores: [3, 2, 1]
   },
   {
-    category: "Diet & Exercise",
-    text: "How many servings of fruits and vegetables do you eat per day?",
-    options: ["5 or more", "3–4 servings", "1–2 servings", "Less than 1 serving"],
-    scores: [0, 1, 2, 3]
+    category: "Health Planning",
+    text: "Do you have a personal health plan or goals?",
+    options: ["Yes, documented or tracked", "I have general intentions", "Not currently"],
+    scores: [3, 2, 1]
   },
   {
-    category: "Physical Activity",
-    text: "How physically active are you on a weekly basis?",
-    options: ["Active most days (150+ min/week)", "Moderately active (60–150 min/week)", "Light activity (less than 60 min/week)", "Mostly sedentary"],
-    scores: [0, 1, 2, 3]
-  },
-  {
-    category: "Family History",
-    text: "Has anyone in your immediate family (parent, sibling, child) been diagnosed with cancer?",
-    options: ["No known family history", "Distant relative (grandparent, aunt/uncle)", "One immediate family member", "Two or more immediate family members"],
-    scores: [0, 1, 2, 3]
-  },
-  {
-    category: "Screenings",
-    text: "When did you last have a health screening or cancer check-up?",
-    options: ["Within the last year", "1–3 years ago", "More than 3 years ago", "Never had one"],
-    scores: [0, 1, 2, 3]
-  },
-  {
-    category: "Awareness",
-    text: "Have you noticed any of the following recently? (persistent fatigue, unexplained weight loss, unusual lumps, or prolonged pain)",
-    options: ["None of the above", "One of the above", "Two of the above", "Three or more"],
-    scores: [0, 2, 3, 4]
+    category: "Health Mindset",
+    text: "When it comes to your health, which statement best describes you?",
+    options: ["I take a proactive, long-term view", "I act when needed", "I tend to postpone"],
+    scores: [3, 2, 1]
   }
 ];
 
@@ -607,37 +655,29 @@ function prevQuestion() {
 
 function showResults() {
   totalScore = answers.reduce((sum, ans, i) => sum + (ans !== null ? questions[i].scores[ans] : 0), 0);
-  const maxScore = questions.reduce((sum, q) => sum + Math.max(...q.scores), 0);
-  const pct = totalScore / maxScore;
 
   let level, color, title, desc, insights;
 
-  if (pct < 0.33) {
-    level = 'Low Risk'; color = 'low';
-    title = 'Your lifestyle looks healthy — keep it up!';
-    desc = 'Based on your responses, you currently show a low risk profile for cancer. This is encouraging! Maintaining your healthy habits is the best preventive strategy. A brief chat with our specialist can help you stay on track.';
+  if (totalScore >= 36) {
+    level = 'Platinum'; color = 'high';
+    title = 'Preventive Leader';
+    desc = 'You take a proactive, long-term approach to health and well-being. Your habits support resilience, performance, and longevity.';
     insights = [
-      'Your current habits are protective — well done.',
-      'Routine annual screenings are still important even at low risk.',
-      'Staying active and maintaining a balanced diet are your best allies.',
+      'Refine your screening schedule with an HCCH physician to ensure it aligns with your age, lifestyle, and family history.',
     ];
-  } else if (pct < 0.65) {
-    level = 'Moderate Risk'; color = 'moderate';
-    title = 'Some lifestyle factors worth discussing.';
-    desc = 'Your responses suggest a moderate risk profile. Several lifestyle or family factors may be worth reviewing with a specialist. Early awareness and regular screenings can make a significant difference.';
+  } else if (totalScore >= 26) {
+    level = 'Silver'; color = 'moderate';
+    title = 'On the Right Track';
+    desc = 'You have a solid foundation for long-term health, with opportunities to strengthen preventive care and screening consistency.';
     insights = [
-      'Certain habits or family history may increase your overall risk.',
-      'A cancer screening schedule tailored to your profile is advisable.',
-      'Small lifestyle adjustments now can significantly reduce long-term risk.',
+      'A brief consultation can help identify which screenings and lifestyle adjustments will support your goals.',
     ];
   } else {
-    level = 'Higher Risk'; color = 'high';
-    title = 'We strongly encourage a specialist conversation today.';
-    desc = 'Your answers indicate several factors that are associated with a higher cancer risk profile. This does not mean you have cancer — but it does mean a conversation with our doctor today is especially valuable for you.';
+    level = 'Bronze'; color = 'low';
+    title = 'Time to Prioritize Prevention';
+    desc = 'Preventive care may not yet be part of your routine. Small, intentional steps today can make a meaningful difference over time.';
     insights = [
-      'Multiple risk factors are present — early detection is key.',
-      'Please speak with one of our Healthway doctors at the booth today.',
-      'A personalised screening plan can give you clarity and peace of mind.',
+      'Speak with an HCCH doctor to outline simple, practical next steps tailored to your schedule and priorities.',
     ];
   }
 
